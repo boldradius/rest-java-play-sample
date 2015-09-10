@@ -10,6 +10,13 @@ public class User {
         this.name=name;
     }
 
+    public User() {} //Necessary for Json deserialization?
+
+    public User(String name, Long id) {
+        this.id=id;
+        this.name=name;
+    }
+
     public Long getId() {
         return id;
     }

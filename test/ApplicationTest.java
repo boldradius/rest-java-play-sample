@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import play.libs.Json;
 
 import controllers.routes;
 import org.junit.*;
@@ -21,40 +22,64 @@ import static org.fest.assertions.Assertions.*;
 
 /**
  *
- * Simple (JUnit) tests that can call all parts of a Play app.
- * If you are interested in mocking a whole application, see the wiki for more details.
+ * Basic tests
+ * (Incomplete!)
  *
  */
 public class ApplicationTest {
 
-    @Test
-    public void simpleCheck() {
-        int a = 1 + 1;
-        assertThat(a).isEqualTo(2);
-    }
 
     @Test
-    public void indexTemplateShouldContainTheStringThatIsPassedToIt() {
+    public void postRequestShouldCreateNewUser() {
         running(fakeApplication(), new Runnable() {
             public void run() {
-                Content html = views.html.index.render("Your new application is ready.");
-                assertThat(contentType(html)).isEqualTo("text/html");
-                assertThat(contentAsString(html)).contains("Your new application is ready.");
+                String jsonStr = "{\"name\": \"john\", \"id\":0}";
+                Result result = callAction(routes.ref.Application.createUser(), fakeRequest().withJsonBody(Json.parse(jsonStr)));
+                        assertThat(status(result)).isEqualTo(CREATED);
             }
         });
     }
 
     @Test
-    public void indexShouldContainTheCorrectString() {
+    public void postRequestShouldHandleMissingData() {
         running(fakeApplication(), new Runnable() {
             public void run() {
-                Result result = callAction(routes.ref.Application.index());
-                assertThat(status(result)).isEqualTo(OK);
-                assertThat(contentType(result)).isEqualTo("text/html");
-                assertThat(charset(result)).isEqualTo("utf-8");
-                assertThat(contentAsString(result)).contains("Hello Play Framework");
+                String jsonStr = "{\"name\": \"john\"}";
+                Result result = callAction(routes.ref.Application.createUser(), fakeRequest().withJsonBody(Json.parse(jsonStr)));
+                assertThat(status(result)).isEqualTo(BAD_REQUEST);
             }
         });
     }
 
+    @Test
+    public void getRequestShouldHandleNotFound() {
+        running(fakeApplication(), new Runnable() {
+            public void run() {
+                Result result = callAction(routes.ref.Application.getUser(888L));
+                assertThat(status(result)).isEqualTo(NOT_FOUND);
+            }
+        });
+    }
+
+
+    @Test
+    public void putRequestShouldHandleNotFound() {
+        running(fakeApplication(), new Runnable() {
+            public void run() {
+                String jsonStr = "{\"name\": \"john\"}";
+                Result result = callAction(routes.ref.Application.updateUser(888L), fakeRequest().withJsonBody(Json.parse(jsonStr)));
+                assertThat(status(result)).isEqualTo(NOT_FOUND);
+            }
+        });
+    }
+
+    @Test
+    public void deleteRequestShouldReturnNotAllowed() {
+        running(fakeApplication(), new Runnable() {
+            public void run() {
+                Result result = callAction(routes.ref.Application.deleteUser(888L));
+                assertThat(status(result)).isEqualTo(METHOD_NOT_ALLOWED);
+            }
+        });
+    }
 }
