@@ -12,7 +12,7 @@ public class Application extends Controller {
     static HashMap<Long, User> map = new HashMap<Long,User>();
     
     public static Result index() {
-        return ok(views.html.index.render("Hello Play Framework"));
+        return ok(views.html.index.render("Hello RESTful Exercise!"));
     }
 
     public static Result getUsers()

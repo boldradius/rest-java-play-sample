@@ -8,9 +8,9 @@ GET     /users                 controllers.Application.getUsers
 GET     /users/:id             controllers.Application.getUser(id: Long)
 
 #TODO fix POST and PUT to take params from request body
-POST    /users/:id/:name       controllers.Application.createUser(id: Long, name: String)
-PUT     /users/:id             controllers.Application.updateUser(id: Long, name: String)
-DELETE  /users/:id             controllers.Application.deleteUser(id: Long)
+#POST    /users/:id/:name       controllers.Application.createUser(id: Long, name: String)
+#PUT     /users/:id             controllers.Application.updateUser(id: Long, name: String)
+#DELETE  /users/:id             controllers.Application.deleteUser(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
