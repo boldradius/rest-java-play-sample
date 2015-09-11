@@ -17,7 +17,7 @@ Example exercises are provided below (duplicated from the workshop slides).
 
 * Create 3 new users using __*curl*__ with ids 1-3.
 	
-	```curl -vX POST http://localhost:9000/users -d '{"name”:”John”, "id":1}' --header "Content-Type: application/json”```  
+	```curl -vX POST http://localhost:9000/users -d '{"name":"John", "id":1}' --header "Content-Type: application/json"```  
 	
 	What code should be returned in the response header on success?  
 
@@ -51,7 +51,7 @@ Example exercises are provided below (duplicated from the workshop slides).
 	
 	Use __*curl*__ to update the name of any user.
 
-	```curl -vX POST http://localhost:9000/users/1 -d '{"name”:”John”}' --header "Content-Type: application/json”``` 
+	```curl -vX POST http://localhost:9000/users/1 -d '{"name":"John"}' --header "Content-Type: application/json"``` 
 	
 
 ---
