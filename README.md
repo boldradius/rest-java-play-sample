@@ -15,18 +15,21 @@ Example exercises are provided below (duplicated from the workshop slides).
 
 * Add a __*POST*__ endpoint for creating a new user with id and username specified in the request body.
 
-* Create 10 new users using __*curl*__ with ids 1-10.  
-
-* Check __*http://localhost:9000/users*__ again to see all the users you added.
+* Create 3 new users using __*curl*__ with ids 1-3.
+	
+	```curl -vX POST http://localhost:9000/users -d '{"name”:”John”, "id":1}' --header "Content-Type: application/json”```  
+	
+	What code should be returned in the response header on success?  
 
 ---
 
 # __Exercise 1 cont’d__
 
+* Check __*http://localhost:9000/users*__ again to see all the users you added.
 
-* What happens when you try to POST with a non-integer user id?  
+* What happens when you try to POST with a non-integer user id or with the id missing entirely?  
 
-	Update your endpoint so that a 400 (Bad Request) response code is returned in this case.  
+	What code should be returned in the response header?  
 
 ---
 
@@ -34,17 +37,11 @@ Example exercises are provided below (duplicated from the workshop slides).
 
 * Add a __*GET*__ endpoint for retrieving a user with a specific id.  
 
-	Try manually checking that your endpoint works correctly using your web browser.
+	*	Try manually checking that your endpoint works correctly using your web browser.
+	*	What code should be returned in the response header on success?
+	*	What code should be returned when the user does not exist?
+	*	What should when you request a non-integer user id?
 
----
-
-# __Exercise 2 cont’d__
-	
-* What happens when you request a user id that does not exist?  
-
-	Update your endpoint so that a 404 (Not Found) response code is returned when a user is not found.  
-
-* What happens when you try to GET a non-integer user id?
 
 ---
 
@@ -54,11 +51,7 @@ Example exercises are provided below (duplicated from the workshop slides).
 	
 	Use __*curl*__ to update the name of any user.
 
-* What happens when you request a user id that does not exist?  
-
-* What happens when you request a non-integer user id?  
-	
-* Are you duplicating code that checks for these cases in each handler?  Is there a better way?
+	```curl -vX POST http://localhost:9000/users/1 -d '{"name”:”John”}' --header "Content-Type: application/json”``` 
 	
 
 ---
@@ -71,6 +64,4 @@ Example exercises are provided below (duplicated from the workshop slides).
 
 
 ---
-
-
 
