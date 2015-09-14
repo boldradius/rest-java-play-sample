@@ -2,17 +2,25 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Home page
 GET     /                           controllers.Application.index()
 
-GET     /users                 controllers.Application.getUsers
-
-#TODO COMMENT OUT THE FOLLOWING TO LEAVE AS AN EXERCISE FOR STUDENTS
-GET     /users/:id             controllers.Application.getUser(id: Long)
-POST    /users                 controllers.Application.createUser()
-PUT     /users/:id             controllers.Application.updateUser(id: Long)
-DELETE  /users/:id             controllers.Application.deleteUser(id: Long)
-
-
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+GET     /users                      controllers.Application.getUsers()
+
+# TODO COMMENT OUT THE FOLLOWING TO LEAVE AS EXERCISE
+# API ENDPOINTS
+GET     /users/:id                  controllers.Application.getUser(id: Long)
+POST    /users                      controllers.Application.createUser()
+PUT     /users/:id                  controllers.Application.updateUser(id: Long)
+DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)
+
+# TODO COMMENT OUT TO LEAVE AS EXERCISE
+# SWAGGER ENDPOINT DOCS
+GET     /api-docs.json              @pl.matisoft.swagger.ApiHelpController.getResources
+GET     /api-docs.json/users        @pl.matisoft.swagger.ApiHelpController.getResource(path = "/users")
+GET     /swagger                    controllers.Application.swagger
+
+

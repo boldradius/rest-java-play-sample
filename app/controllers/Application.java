@@ -1,35 +1,80 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.wordnik.swagger.annotations.*;
 import models.User;
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Results;
 import play.libs.Json;
-import play.mvc.Http;
+import play.*;
+import play.mvc.*;
 
+import views.html.*;
 import java.util.HashMap;
 
+
+@Api(value = "/users", description = "Operations with Users")
 public class Application extends Controller {
 
     static HashMap<Long, User> map = new HashMap<Long,User>();
     
-    public static Result index() {
-        return ok(views.html.index.render("Hello RESTful Exercise!"));
+    public Result index() {
+        return ok(index.render("Hello RESTful Exercise!"));
     }
 
-    public static Result getUsers() {
+    public Result swagger() {
+        return ok(swagger.render());
+    }
+
+    @ApiOperation(
+        nickname = "getUsers",
+        value = "Get All Users",
+        notes = "Returns List of All Users",
+        response = User.class,
+        httpMethod = "GET")
+    public Result getUsers() {
         return ok(Json.toJson(map.values()));
     }
 
-    //TODO Everything below this comment should be removed and left as an exercise for students.
-
-    public static Result getUser(Long id) {
+    @ApiOperation(
+        nickname = "getUser",
+        value = "Get a User",
+        notes = "Returns a Single User",
+        response = User.class,
+        httpMethod = "GET")
+    public Result getUser(Long id) {
         User user = map.get(id);
         return user == null ? notFound() : ok(Json.toJson(user));
     }
 
-    public static Result createUser() {
+    @ApiOperation(
+        nickname = "createUser",
+        value = "Create New User",
+        notes = "Create New User",
+        httpMethod = "POST",
+        response = User.class
+    )
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "id",
+            dataType = "User",
+            required = true,
+            paramType = "Long",
+            value = "Id"
+        ), @ApiImplicitParam(
+            name = "name",
+            dataType = "User",
+            required = true,
+            paramType = "String",
+            value = "Name"
+        )
+    })
+    @ApiResponses(
+        value = {
+            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Json Processing Exception"),
+            @com.wordnik.swagger.annotations.ApiResponse(code = 201, message = "Successfully created new user")
+
+        }
+    )
+    public Result createUser() {
         User user = getUserFromRequest(request());
         if(user==null)
             return badRequest();
@@ -39,7 +84,35 @@ public class Application extends Controller {
     }
 
 
-    public static Result updateUser(Long id) {
+    @ApiOperation(
+        nickname = "Update User",
+        value = "Update User Information",
+        notes = "Update User Information",
+        response = User.class,
+        httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "id",
+            dataType = "User",
+            required = true,
+            paramType = "Long",
+            value = "Id"
+        ), @ApiImplicitParam(
+            name = "name",
+            dataType = "User",
+            required = true,
+            paramType = "String",
+            value = "Name"
+        )
+    })
+    @ApiResponses(
+        value = {
+            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Json Processing Exception"),
+            @com.wordnik.swagger.annotations.ApiResponse(code = 200, message = "Successfully updated new user")
+
+        }
+    )
+    public Result updateUser(Long id) {
         if(map.get(id)==null)
             return notFound();
 
@@ -54,12 +127,12 @@ public class Application extends Controller {
     }
 
 
-    public static Result deleteUser(Long id) {
+    public Result deleteUser(Long id) {
         return new Results.Status(play.core.j.JavaResults.MethodNotAllowed());
     }
 
     //Helper
-    private static String getNameFromRequest(Http.Request r) {
+    private String getNameFromRequest(Http.Request r) {
         try {
             String name = r.body().asJson().get("name").asText();
             return name;
@@ -69,7 +142,7 @@ public class Application extends Controller {
     }
 
     //Helper
-    private static User getUserFromRequest(Http.Request r) {
+    private User getUserFromRequest(Http.Request r) {
          try {
              User user = Json.fromJson(request().body().asJson(), User.class);
              return (user.getId()==null || user.getName()==null) ? null : user;

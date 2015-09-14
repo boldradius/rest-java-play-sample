@@ -1,11 +1,18 @@
-import play.Project._
-
-name := """rest-play-java"""
+name := """rest-sample-project"""
 
 version := "1.0-SNAPSHOT"
 
-libraryDependencies ++= Seq(
-  "org.webjars" %% "webjars-play" % "2.2.2", 
-  "org.webjars" % "bootstrap" % "2.3.1")
+lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-playJavaSettings
+scalaVersion := "2.11.6"
+
+libraryDependencies ++= Seq(
+  javaJdbc,
+  cache,
+  javaWs,
+  "pl.matisoft" %% "swagger-play24" % "1.4"
+)
+
+// Play provides two styles of routers, one expects its actions to be injected, the
+// other, legacy style, accesses its actions statically.
+routesGenerator := InjectedRoutesGenerator
