@@ -56,6 +56,19 @@ public class ApplicationTest extends WithApplication {
     }
 
     @Test
+    public void putRequestShouldupdateExistingUser() {
+        User john = new User("john",1L);
+        Result result1 = route(fakeRequest(POST, "/users").bodyJson(Json.toJson(john)));
+        assertEquals(CREATED, result1.status());
+
+
+        Map<java.lang.String,java.lang.String> data = new HashMap<String,String>();
+        data.put("name", "rubin");
+        Result result2 = route(fakeRequest(PUT, "/users/1").bodyForm(data));
+        assertEquals(OK, result2.status());
+    }
+
+    @Test
     public void postRequestShouldHandleMissingData() {
         String jsonStr = "{\"name\": \"john\"}";
         Result result = route(fakeRequest(POST, "/users").bodyJson(Json.parse(jsonStr)));
@@ -64,8 +77,9 @@ public class ApplicationTest extends WithApplication {
 
     @Test
     public void putRequestShouldHandleNotFound() {
-        String jsonStr = "{\"name\": \"john\"}";
-        Result result = route(fakeRequest(PUT,"/users/888").bodyJson(Json.parse(jsonStr)));
+        Map<java.lang.String,java.lang.String> data = new HashMap<String,String>();
+        data.put("name","John");
+        Result result = route(fakeRequest(PUT, "/users/888").bodyForm(data));
         assertEquals(NOT_FOUND, result.status());
     }
 

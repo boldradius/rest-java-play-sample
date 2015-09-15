@@ -40,6 +40,15 @@ public class Application extends Controller {
         notes = "Returns a Single User",
         response = User.class,
         httpMethod = "GET")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "id",
+            dataType = "Long",
+            required = true,
+            paramType = "path",
+            value = "Id"
+        )
+    })
     public Result getUser(Long id) {
         User user = map.get(id);
         return user == null ? notFound() : ok(Json.toJson(user));
@@ -87,15 +96,15 @@ public class Application extends Controller {
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "id",
-            dataType = "User",
+            dataType = "Long",
             required = true,
-            paramType = "Long",
+            paramType = "path",
             value = "Id"
         ), @ApiImplicitParam(
             name = "name",
-            dataType = "User",
+            dataType = "String",
             required = true,
-            paramType = "String",
+            paramType = "form",
             value = "Name"
         )
     })
@@ -110,14 +119,16 @@ public class Application extends Controller {
         if(map.get(id)==null)
             return notFound();
 
-        String name = getNameFromRequest(request());
-
-        if(name==null)
+        try {
+            String name = request().body().asFormUrlEncoded().get("name")[0];
+            if(name.length()==0)
+                return badRequest();
+            User user = new User(id, name);
+            User updated = map.replace(id, user);
+            return ok(Json.toJson(user));
+        } catch (NullPointerException e){
             return badRequest();
-
-        User user = new User(id, name);
-        User updated = map.replace(id, user);
-        return ok(Json.toJson(updated));
+        }
     }
 
 
@@ -125,15 +136,6 @@ public class Application extends Controller {
         return new Results.Status(play.core.j.JavaResults.MethodNotAllowed());
     }
 
-    //Helper
-    private String getNameFromRequest(Http.Request r) {
-        try {
-            String name = r.body().asJson().get("name").asText();
-            return name;
-        } catch (NullPointerException e) {
-            return null;
-        }
-    }
 
     //Helper
     private User getUserFromRequest(Http.Request r) {
