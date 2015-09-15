@@ -11,9 +11,9 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /users                      controllers.Application.getUsers()
 
 # API ENDPOINTS
-GET     /users/:id                  controllers.Application.getUser(id: Long)
+#GET     /users/:id                  controllers.Application.getUser(id: Long)      #Exercise 2
 POST    /users                      controllers.Application.createUser()
-#PUT     /users/:id                  controllers.Application.updateUser(id: Long)    #Exercise 3
+#PUT     /users/:id                  controllers.Application.updateUser(id: Long)   #Exercise 3
 #DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)   #Exercise 4
 
 

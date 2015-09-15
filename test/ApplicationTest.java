@@ -62,25 +62,13 @@ public class ApplicationTest extends WithApplication {
 
     //-------------------- Exercise 2 --------------------
 
-    @Test
-    public void getRequestShouldReturnUserIfFound() {
-        User john = new User("john",1L);
-        Result result1 = route(fakeRequest(POST, "/users").bodyJson(Json.toJson(john)));
-        assertEquals(CREATED, result1.status());
-
-        Result result2 = route(fakeRequest(GET, "/users/1"));
-        assertEquals(OK, result2.status());
-
-        User returned = Json.fromJson(Json.parse(contentAsString(result2)), User.class);
-        assertEquals(returned.getId(), john.getId());
-        assertEquals(returned.getName(),john.getName());
-    }
-
-    @Test
-    public void getRequestShouldHandleNotFound() {
-        Result result = route(fakeRequest(GET, "/users/888"));
-        assertEquals(NOT_FOUND, result.status());
-    }
+//    @Test
+//    public void getRequestShouldReturnUserIfFound() {
+//    }
+//
+//    @Test
+//    public void getRequestShouldHandleNotFound() {
+//    }
 
     //-------------------- Exercise 3 --------------------
 

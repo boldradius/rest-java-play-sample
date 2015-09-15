@@ -22,12 +22,6 @@ public class Application extends Controller {
         return ok(Json.toJson(map.values()));
     }
 
-
-    public Result getUser(Long id) {
-        User user = map.get(id);
-        return user == null ? notFound() : ok(Json.toJson(user));
-    }
-
     public Result createUser() {
         User user = getUserFromRequest(request());
         if(user==null)
