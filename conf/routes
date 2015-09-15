@@ -10,14 +10,12 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /users                      controllers.Application.getUsers()
 
-# TODO COMMENT OUT THE FOLLOWING TO LEAVE AS EXERCISE
 # API ENDPOINTS
 GET     /users/:id                  controllers.Application.getUser(id: Long)
 POST    /users                      controllers.Application.createUser()
 PUT     /users/:id                  controllers.Application.updateUser(id: Long)
 DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)
 
-# TODO COMMENT OUT TO LEAVE AS EXERCISE
 # SWAGGER ENDPOINT DOCS
 GET     /api-docs.json              @pl.matisoft.swagger.ApiHelpController.getResources
 GET     /api-docs.json/users        @pl.matisoft.swagger.ApiHelpController.getResource(path = "/users")

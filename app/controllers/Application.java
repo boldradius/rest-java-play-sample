@@ -72,7 +72,7 @@ public class Application extends Controller {
     })
     @ApiResponses(
         value = {
-            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Json Processing Exception"),
+            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Bad parameter"),
             @com.wordnik.swagger.annotations.ApiResponse(code = 201, message = "Successfully created new user")
 
         }
@@ -80,7 +80,7 @@ public class Application extends Controller {
     public Result createUser() {
         User user = getUserFromRequest(request());
         if(user==null)
-            return badRequest();
+            return badRequest("Bad parameter");
 
         map.put(user.getId(), user);
         return created(Json.toJson(user));
@@ -110,7 +110,7 @@ public class Application extends Controller {
     })
     @ApiResponses(
         value = {
-            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Json Processing Exception"),
+            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Bad parameter"),
             @com.wordnik.swagger.annotations.ApiResponse(code = 200, message = "Successfully updated new user")
 
         }
@@ -122,12 +122,12 @@ public class Application extends Controller {
         try {
             String name = request().body().asFormUrlEncoded().get("name")[0];
             if(name.length()==0)
-                return badRequest();
+                return badRequest("Bad Parameter");
             User user = new User(id, name);
             User updated = map.replace(id, user);
             return ok(Json.toJson(user));
         } catch (NullPointerException e){
-            return badRequest();
+            return badRequest("Bad Parameter");
         }
     }
 
