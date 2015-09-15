@@ -16,9 +16,6 @@ POST    /users                      controllers.Application.createUser()
 PUT     /users/:id                  controllers.Application.updateUser(id: Long)
 DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)
 
-# SWAGGER ENDPOINT DOCS
-GET     /api-docs.json              @pl.matisoft.swagger.ApiHelpController.getResources
-GET     /api-docs.json/users        @pl.matisoft.swagger.ApiHelpController.getResource(path = "/users")
-GET     /swagger                    controllers.Application.swagger
+
 
 

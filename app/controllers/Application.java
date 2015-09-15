@@ -1,7 +1,6 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.wordnik.swagger.annotations.*;
 import models.User;
 import play.libs.Json;
 import play.*;
@@ -11,7 +10,6 @@ import views.html.*;
 import java.util.HashMap;
 
 
-@Api(value = "/users", description = "Operations with Users")
 public class Application extends Controller {
 
     static HashMap<Long, User> map = new HashMap<Long,User>();
@@ -20,63 +18,16 @@ public class Application extends Controller {
         return ok(index.render("Hello RESTful Exercise!"));
     }
 
-    public Result swagger() {
-        return ok(swagger.render());
-    }
-
-    @ApiOperation(
-        nickname = "getUsers",
-        value = "Get All Users",
-        notes = "Returns List of All Users",
-        response = User.class,
-        httpMethod = "GET")
     public Result getUsers() {
         return ok(Json.toJson(map.values()));
     }
 
-    @ApiOperation(
-        nickname = "getUser",
-        value = "Get a User",
-        notes = "Returns a Single User",
-        response = User.class,
-        httpMethod = "GET")
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "id",
-            dataType = "Long",
-            required = true,
-            paramType = "path",
-            value = "Id"
-        )
-    })
+
     public Result getUser(Long id) {
         User user = map.get(id);
         return user == null ? notFound() : ok(Json.toJson(user));
     }
 
-    @ApiOperation(
-        nickname = "createUser",
-        value = "Create New User",
-        notes = "Create New User",
-        httpMethod = "POST",
-        response = User.class
-    )
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "body",
-            dataType = "User",
-            required = true,
-            paramType = "body",
-            value = "user id and name"
-        )
-    })
-    @ApiResponses(
-        value = {
-            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Bad parameter"),
-            @com.wordnik.swagger.annotations.ApiResponse(code = 201, message = "Successfully created new user")
-
-        }
-    )
     public Result createUser() {
         User user = getUserFromRequest(request());
         if(user==null)
@@ -86,35 +37,6 @@ public class Application extends Controller {
         return created(Json.toJson(user));
     }
 
-
-    @ApiOperation(
-        nickname = "Update User",
-        value = "Update User Information",
-        notes = "Update User Information",
-        response = User.class,
-        httpMethod = "POST")
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "id",
-            dataType = "Long",
-            required = true,
-            paramType = "path",
-            value = "Id"
-        ), @ApiImplicitParam(
-            name = "name",
-            dataType = "String",
-            required = true,
-            paramType = "form",
-            value = "Name"
-        )
-    })
-    @ApiResponses(
-        value = {
-            @com.wordnik.swagger.annotations.ApiResponse(code = 400, message = "Bad parameter"),
-            @com.wordnik.swagger.annotations.ApiResponse(code = 200, message = "Successfully updated new user")
-
-        }
-    )
     public Result updateUser(Long id) {
         if(map.get(id)==null)
             return notFound();
