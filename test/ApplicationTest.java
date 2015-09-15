@@ -111,10 +111,8 @@ public class ApplicationTest extends WithApplication {
 
     //-------------------- Exercise 4 --------------------
 
-    @Test
-    public void deleteRequestShouldReturnNotAllowed() {
-        Result result = route(fakeRequest(DELETE, "/users/888"));
-        assertEquals(METHOD_NOT_ALLOWED, result.status());
-    }
+//    @Test
+//    public void deleteRequestShouldReturnNotAllowed() {
+//    }
 
 }

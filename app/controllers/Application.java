@@ -53,10 +53,7 @@ public class Application extends Controller {
         }
     }
 
-
-    public Result deleteUser(Long id) {
-        return new Results.Status(play.core.j.JavaResults.MethodNotAllowed());
-    }
+    
 
 
     //Helper

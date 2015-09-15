@@ -14,7 +14,7 @@ GET     /users                      controllers.Application.getUsers()
 GET     /users/:id                  controllers.Application.getUser(id: Long)
 POST    /users                      controllers.Application.createUser()
 PUT     /users/:id                  controllers.Application.updateUser(id: Long)
-DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)
+#DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)   #Exercise 4
 
 
 
