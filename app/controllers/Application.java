@@ -22,16 +22,6 @@ public class Application extends Controller {
         return ok(Json.toJson(map.values()));
     }
 
-    public Result createUser() {
-        User user = getUserFromRequest(request());
-        if(user==null)
-            return badRequest("Bad parameter");
-
-        map.put(user.getId(), user);
-        return created(Json.toJson(user));
-    }
-
-
 
 
     //Helper

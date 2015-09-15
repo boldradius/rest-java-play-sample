@@ -43,22 +43,13 @@ public class ApplicationTest extends WithApplication {
 
     //-------------------- Exercise 1 --------------------
 
-    @Test
-    public void postRequestShouldCreateNewUser() {
-        User john = new User("john",1L);
-        Result result = route(fakeRequest(POST, "/users").bodyJson(Json.toJson(john)));
-        assertEquals(CREATED, result.status());
-        User returned = Json.fromJson(Json.parse(contentAsString(result)), User.class);
-        assertEquals(returned.getId(), john.getId());
-        assertEquals(returned.getName(), john.getName());
-    }
-
-    @Test
-    public void postRequestShouldHandleMissingData() {
-        String jsonStr = "{\"name\": \"john\"}";
-        Result result = route(fakeRequest(POST, "/users").bodyJson(Json.parse(jsonStr)));
-        assertEquals(BAD_REQUEST, result.status());
-    }
+//    @Test
+//    public void postRequestShouldCreateNewUser() {
+//    }
+//
+//    @Test
+//    public void postRequestShouldHandleMissingData() {
+//    }
 
     //-------------------- Exercise 2 --------------------
 
