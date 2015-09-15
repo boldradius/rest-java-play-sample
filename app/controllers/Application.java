@@ -37,23 +37,7 @@ public class Application extends Controller {
         return created(Json.toJson(user));
     }
 
-    public Result updateUser(Long id) {
-        if(map.get(id)==null)
-            return notFound();
 
-        try {
-            String name = request().body().asFormUrlEncoded().get("name")[0];
-            if(name.length()==0)
-                return badRequest("Bad Parameter");
-            User user = new User(id, name);
-            User updated = map.replace(id, user);
-            return ok(Json.toJson(user));
-        } catch (NullPointerException e){
-            return badRequest("Bad Parameter");
-        }
-    }
-
-    
 
 
     //Helper

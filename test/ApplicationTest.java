@@ -84,30 +84,14 @@ public class ApplicationTest extends WithApplication {
 
     //-------------------- Exercise 3 --------------------
 
-    @Test
-    public void putRequestShouldUpdateExistingUser() {
-        User john = new User("john",1L);
-        Result result1 = route(fakeRequest(POST, "/users").bodyJson(Json.toJson(john)));
-        assertEquals(CREATED, result1.status());
-
-        Map<java.lang.String,java.lang.String> data = new HashMap<String,String>();
-        data.put("name", "rubin");
-        Result result2 = route(fakeRequest(PUT, "/users/1").bodyForm(data));
-        assertEquals(OK, result2.status());
-
-        User returned = Json.fromJson(Json.parse(contentAsString(result2)), User.class);
-        assertEquals(returned.getId(), john.getId());
-        assertEquals(returned.getName(),"rubin");
-    }
-
-
-    @Test
-    public void putRequestShouldHandleNotFound() {
-        Map<java.lang.String,java.lang.String> data = new HashMap<String,String>();
-        data.put("name","John");
-        Result result = route(fakeRequest(PUT, "/users/888").bodyForm(data));
-        assertEquals(NOT_FOUND, result.status());
-    }
+//    @Test
+//    public void putRequestShouldUpdateExistingUser() {
+//    }
+//
+//
+//    @Test
+//    public void putRequestShouldHandleNotFound() {
+//    }
 
     //-------------------- Exercise 4 --------------------
 

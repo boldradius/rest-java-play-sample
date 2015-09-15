@@ -13,7 +13,7 @@ GET     /users                      controllers.Application.getUsers()
 # API ENDPOINTS
 GET     /users/:id                  controllers.Application.getUser(id: Long)
 POST    /users                      controllers.Application.createUser()
-PUT     /users/:id                  controllers.Application.updateUser(id: Long)
+#PUT     /users/:id                  controllers.Application.updateUser(id: Long)    #Exercise 3
 #DELETE  /users/:id                  controllers.Application.deleteUser(id: Long)   #Exercise 4
 
 
