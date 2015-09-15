@@ -54,17 +54,11 @@ public class Application extends Controller {
     )
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "id",
+            name = "body",
             dataType = "User",
             required = true,
-            paramType = "Long",
-            value = "Id"
-        ), @ApiImplicitParam(
-            name = "name",
-            dataType = "User",
-            required = true,
-            paramType = "String",
-            value = "Name"
+            paramType = "body",
+            value = "user id and name"
         )
     })
     @ApiResponses(

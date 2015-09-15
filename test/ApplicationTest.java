@@ -1,23 +1,25 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import play.libs.Json;
 
-import controllers.routes;
+import models.User;
 import org.junit.*;
 
+
+
+import play.libs.Json;
 import play.mvc.*;
-import play.test.*;
-import play.data.DynamicForm;
-import play.data.validation.ValidationError;
-import play.data.validation.Constraints.RequiredValidator;
-import play.i18n.Lang;
-import play.libs.F;
-import play.libs.F.*;
+import play.mvc.Result;
+import play.test.FakeApplication;
+import play.test.Helpers;
+import play.test.WithApplication;
+import play.twirl.api.Content;
 
 import static play.test.Helpers.*;
-import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -26,60 +28,51 @@ import static org.fest.assertions.Assertions.*;
  * (Incomplete!)
  *
  */
-public class ApplicationTest {
+public class ApplicationTest extends WithApplication {
+
+    @Override
+    protected FakeApplication provideFakeApplication() {
+        return fakeApplication();
+    }
+
+    @Test
+    public void getAllUsersRequestShouldReturnOK() {
+        Result result = route(fakeRequest(GET, "/users"));
+        assertEquals(OK, result.status());
+    }
 
 
     @Test
+    public void getRequestShouldHandleNotFound() {
+        Result result = route(fakeRequest(GET, "/users/888"));
+        assertEquals(NOT_FOUND, result.status());
+    }
+
+    @Test
     public void postRequestShouldCreateNewUser() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                String jsonStr = "{\"name\": \"john\", \"id\":0}";
-                Result result = callAction(routes.ref.Application.createUser(), fakeRequest().withJsonBody(Json.parse(jsonStr)));
-                        assertThat(status(result)).isEqualTo(CREATED);
-            }
-        });
+        User john = new User("john",1L);
+        Result result = route(fakeRequest(POST, "/users").bodyJson(Json.toJson(john)));
+        assertEquals(CREATED, result.status());
     }
 
     @Test
     public void postRequestShouldHandleMissingData() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                String jsonStr = "{\"name\": \"john\"}";
-                Result result = callAction(routes.ref.Application.createUser(), fakeRequest().withJsonBody(Json.parse(jsonStr)));
-                assertThat(status(result)).isEqualTo(BAD_REQUEST);
-            }
-        });
+        String jsonStr = "{\"name\": \"john\"}";
+        Result result = route(fakeRequest(POST, "/users").bodyJson(Json.parse(jsonStr)));
+        assertEquals(BAD_REQUEST, result.status());
     }
-
-    @Test
-    public void getRequestShouldHandleNotFound() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                Result result = callAction(routes.ref.Application.getUser(888L));
-                assertThat(status(result)).isEqualTo(NOT_FOUND);
-            }
-        });
-    }
-
 
     @Test
     public void putRequestShouldHandleNotFound() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                String jsonStr = "{\"name\": \"john\"}";
-                Result result = callAction(routes.ref.Application.updateUser(888L), fakeRequest().withJsonBody(Json.parse(jsonStr)));
-                assertThat(status(result)).isEqualTo(NOT_FOUND);
-            }
-        });
+        String jsonStr = "{\"name\": \"john\"}";
+        Result result = route(fakeRequest(PUT,"/users/888").bodyJson(Json.parse(jsonStr)));
+        assertEquals(NOT_FOUND, result.status());
     }
 
     @Test
     public void deleteRequestShouldReturnNotAllowed() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                Result result = callAction(routes.ref.Application.deleteUser(888L));
-                assertThat(status(result)).isEqualTo(METHOD_NOT_ALLOWED);
-            }
-        });
+        Result result = route(fakeRequest(DELETE, "/users/888"));
+        assertEquals(METHOD_NOT_ALLOWED, result.status());
     }
+
 }
